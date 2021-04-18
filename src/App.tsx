@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { QuestionCard } from './Components/QuestionCard';
 import { fetchQuestions, Difficulty, QuestionState } from './API';
+import { constants } from 'node:os';
 
 const TOTAL_QUESTIONS = 10;
 
@@ -31,8 +32,31 @@ function App() {
 		setNumber(0);
 		setLoading(false);
 	};
-	const nextQuestion = async () => {};
-	const checkAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {};
+	const nextQuestion = async () => {
+		const nextQuestion = number + 1;
+		if (nextQuestion === TOTAL_QUESTIONS) {
+			setGameOver(true);
+		} else {
+			setNumber(nextQuestion);
+		}
+	};
+	const checkAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {
+		if (!gameOver) {
+			const answer = e.currentTarget.value;
+
+			const correct = questions[number].correct_answer === answer;
+
+			if (correct) setScore((prev) => prev + 1);
+
+			const answerObject = {
+				question: questions[number].question,
+				answer,
+				correct,
+				correctAnswer: questions[number].correct_answer,
+			};
+			setUserAnswers((prev) => [...prev, answerObject]);
+		}
+	};
 
 	return (
 		<div className="App">
@@ -43,7 +67,7 @@ function App() {
 						Begin Quiz
 					</button>
 				) : null}
-				{!gameOver ? <p className="score">Scores : </p> : null}
+				{!gameOver ? <p className="score">Scores : {score} </p> : null}
 				{loading ? <p>Loading</p> : null}
 				{!loading && !gameOver ? (
 					<QuestionCard
