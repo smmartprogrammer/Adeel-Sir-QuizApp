@@ -1,4 +1,5 @@
 import styled, {createGlobalStyle} from 'styled-components';
+import bgimage from "./Components/image/leaves.jpeg";
 
 export const GlobalStyle = createGlobalStyle` 
     html {
@@ -6,7 +7,9 @@ export const GlobalStyle = createGlobalStyle`
     }
 
 body    {
-    background-color: navy;
+    background-image: url(${bgimage});
+    background-size: cover;
+    // background-color: violet;
     margin:0;
     padding: 0 20px;
     display: flex;
